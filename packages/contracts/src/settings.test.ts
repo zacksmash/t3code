@@ -76,6 +76,37 @@ describe("ClientSettings proactive panels", () => {
   });
 });
 
+describe("ClientSettings talking head", () => {
+  it("defaults to a hidden robot for older saved settings", () => {
+    expect(decodeClientSettings({})).toMatchObject({
+      talkingHeadEnabled: false,
+      talkingHeadAvatar: "robot",
+      talkingHeadSoundEnabled: true,
+    });
+  });
+
+  it.each(["robot", "wizard", "knight", "rogue", "slime", "archer", "healer"] as const)(
+    "accepts the %s avatar",
+    (talkingHeadAvatar) => {
+      expect(decodeClientSettingsPatch({ talkingHeadEnabled: true, talkingHeadAvatar })).toEqual({
+        talkingHeadEnabled: true,
+        talkingHeadAvatar,
+      });
+    },
+  );
+
+  it("rejects unsupported avatars", () => {
+    expect(() => decodeClientSettings({ talkingHeadAvatar: "dragon" })).toThrow();
+    expect(() => decodeClientSettingsPatch({ talkingHeadAvatar: "dragon" })).toThrow();
+  });
+
+  it("accepts a client-local dialogue sound preference", () => {
+    expect(decodeClientSettingsPatch({ talkingHeadSoundEnabled: false })).toEqual({
+      talkingHeadSoundEnabled: false,
+    });
+  });
+});
+
 describe("ClientSettings quit confirmation", () => {
   it("defaults to hold", () => {
     expect(decodeClientSettings({}).confirmQuit).toBe("hold");

@@ -159,6 +159,7 @@ import {
 import { searchableSetting } from "./settingsSearch";
 import { ProjectFavicon } from "../ProjectFavicon";
 import { PanelAnimationsPreview } from "./PanelAnimationsPreview";
+import { TalkingHeadSettings } from "./TalkingHeadSettings";
 
 const ENVIRONMENT_IDENTIFICATION_LABELS: Record<EnvironmentIdentificationMode, string> = {
   artwork: "Artwork",
@@ -1234,6 +1235,8 @@ export function AppearanceSettingsPanel() {
           />
         ) : null}
       </SettingsSection>
+
+      <TalkingHeadSettings />
 
       <SettingsSection id="motion" title="Motion">
         <SettingsRow

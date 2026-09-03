@@ -216,6 +216,7 @@ import {
   useClientSettings,
   useClientSettingsHydrated,
   useEnvironmentSettings,
+  useUpdateClientSettings,
 } from "../hooks/useSettings";
 import { useNowMinute } from "../hooks/useNowMinute";
 import { usePanelAnimationSettings, usePanelPresence } from "../panelAnimations";
@@ -300,6 +301,13 @@ import type { AssistantCitationRequest } from "./chat/AssistantCitationSource";
 import { resolveTimelineIsAtEnd } from "./chat/MessagesTimeline.logic";
 import { ChatHeader } from "./chat/ChatHeader";
 import { PanelLayoutControls, RightPanelMaximizeControl } from "./chat/PanelLayoutControls";
+import { TalkingHead } from "./chat/TalkingHead";
+import {
+  isTalkingHeadThreadReady,
+  latestTalkingHeadSpeechSnapshot,
+} from "./chat/TalkingHead.logic";
+import { useTalkingHeadSpeaking } from "./chat/useTalkingHeadSpeaking";
+import { prepareTalkingHeadSound, useTalkingHeadSound } from "./chat/useTalkingHeadSound";
 import { expandedImageKey, type ExpandedImagePreview } from "./chat/ExpandedImagePreview";
 import { NoActiveThreadState } from "./NoActiveThreadState";
 import { WorkspacePageHeader } from "./WorkspacePageHeader";
@@ -1421,6 +1429,7 @@ function ChatViewContent(props: ChatViewProps) {
   }, [routeKind, routeThreadRef, routeThreadState]);
   const markThreadVisited = useUiStateStore((store) => store.markThreadVisited);
   const settings = useEnvironmentSettings(environmentId);
+  const updateClientSettings = useUpdateClientSettings();
   // New-thread defaults live in the primary environment's settings.json (the
   // settings UI never writes to remote environments), so read them from the
   // primary server rather than the thread's environment.
@@ -2503,6 +2512,20 @@ function ChatViewContent(props: ChatViewProps) {
     [threadActivities],
   );
   const activePendingUserInput = pendingUserInputs[0] ?? null;
+  const talkingHeadThreadReady = isTalkingHeadThreadReady(
+    routeThreadKey,
+    activeThreadKey,
+    threadDetailLoading,
+  );
+  const talkingHeadMessages = talkingHeadThreadReady ? (activeThread?.messages ?? []) : [];
+  const talkingHeadSpeaking = useTalkingHeadSpeaking(
+    settings.talkingHeadEnabled,
+    settings.enableLegacyTokenStreaming,
+    talkingHeadThreadReady,
+    routeThreadKey,
+    talkingHeadMessages,
+    talkingHeadThreadReady ? (activePendingUserInput?.requestId ?? null) : null,
+  );
   const activePendingDraftAnswers = useMemo(
     () =>
       activePendingUserInput
@@ -2524,6 +2547,16 @@ function ChatViewContent(props: ChatViewProps) {
           )
         : null,
     [activePendingDraftAnswers, activePendingQuestionIndex, activePendingUserInput],
+  );
+  const talkingHeadCadenceText =
+    (talkingHeadThreadReady ? activePendingProgress?.activeQuestion?.question : null) ??
+    latestTalkingHeadSpeechSnapshot(talkingHeadMessages)?.text ??
+    "";
+  useTalkingHeadSound(
+    settings.talkingHeadEnabled && settings.talkingHeadSoundEnabled,
+    talkingHeadSpeaking,
+    settings.talkingHeadAvatar,
+    talkingHeadCadenceText,
   );
   const activePendingResolvedAnswers = useMemo(
     () =>
@@ -2573,6 +2606,15 @@ function ChatViewContent(props: ChatViewProps) {
     threadError,
   });
   const isWorking = phase === "running" || isSendBusy || isConnecting || isRevertingCheckpoint;
+  const handleTalkingHeadOpenChange = useCallback(
+    (talkingHeadEnabled: boolean) => {
+      if (talkingHeadEnabled && settings.talkingHeadSoundEnabled) {
+        prepareTalkingHeadSound();
+      }
+      updateClientSettings({ talkingHeadEnabled });
+    },
+    [settings.talkingHeadSoundEnabled, updateClientSettings],
+  );
   const activeWorkStartedAt = deriveActiveWorkStartedAt(
     activeLatestTurn,
     activeThread?.session ?? null,
@@ -7372,6 +7414,8 @@ function ChatViewContent(props: ChatViewProps) {
 
   const panelToggleControls = (
     <PanelLayoutControls
+      showTalkingHeadControl
+      talkingHeadOpen={settings.talkingHeadEnabled}
       terminalAvailable={activeProject !== null}
       terminalOpen={terminalUiState.terminalOpen}
       terminalShortcutLabel={shortcutLabelForCommand(keybindings, "terminal.toggle")}
@@ -7383,6 +7427,7 @@ function ChatViewContent(props: ChatViewProps) {
       liveAgentCount={
         rightPanelOpen && activeRightPanelSurface?.kind === "agents" ? 0 : agentPanelModel.liveCount
       }
+      onTalkingHeadOpenChange={handleTalkingHeadOpenChange}
       onToggleTerminal={toggleTerminalVisibility}
       onToggleRightPanel={toggleRightPanel}
     />
@@ -7639,6 +7684,13 @@ function ChatViewContent(props: ChatViewProps) {
                   Drop files to attach
                 </div>
               </div>
+            ) : null}
+            {settings.talkingHeadEnabled && talkingHeadThreadReady ? (
+              <TalkingHead
+                avatar={settings.talkingHeadAvatar}
+                key={routeThreadKey}
+                speaking={talkingHeadSpeaking}
+              />
             ) : null}
             {/* Provider status overlays the timeline without changing its content height. */}
             <div className="pointer-events-none absolute inset-x-0 top-0 z-20">

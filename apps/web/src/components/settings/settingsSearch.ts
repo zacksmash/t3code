@@ -100,6 +100,29 @@ export const SETTINGS_SEARCH_ITEMS = [
     to: "/settings/appearance",
   },
   {
+    id: "talking-head-enabled",
+    title: "Show talking head",
+    to: "/settings/appearance",
+    targetId: "talking-head",
+    searchTerms: ["pixel portrait avatar RPG agent animation"],
+  },
+  {
+    id: "talking-head-avatar",
+    title: "Talking head avatar",
+    to: "/settings/appearance",
+    targetId: "talking-head",
+    searchTerms: [
+      "robot wizard knight rogue slime archer healer priest female character pixel portrait",
+    ],
+  },
+  {
+    id: "talking-head-sound",
+    title: "Talking head sounds",
+    to: "/settings/appearance",
+    targetId: "talking-head",
+    searchTerms: ["audio sound boop beep blip RPG dialogue mute"],
+  },
+  {
     id: "environment-identification",
     title: "Environment identification",
     to: "/settings/appearance",

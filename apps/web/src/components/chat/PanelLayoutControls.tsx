@@ -1,11 +1,19 @@
-import { Maximize2Icon, Minimize2Icon, PanelBottomIcon, PanelRightIcon } from "lucide-react";
+import {
+  Maximize2Icon,
+  Minimize2Icon,
+  PanelBottomIcon,
+  PanelRightIcon,
+  ScanFaceIcon,
+} from "lucide-react";
 import { memo } from "react";
 
 import { Toggle } from "../ui/toggle";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "../ui/tooltip";
 
 interface PanelLayoutControlsProps {
+  showTalkingHeadControl?: boolean;
   showTerminalControl?: boolean;
+  talkingHeadOpen?: boolean;
   terminalAvailable: boolean;
   terminalOpen: boolean;
   terminalShortcutLabel: string | null;
@@ -15,12 +23,15 @@ interface PanelLayoutControlsProps {
   rightPanelUnavailableLabel?: string;
   /** Running + waiting subagents in this thread; badges the right panel toggle. */
   liveAgentCount: number;
+  onTalkingHeadOpenChange?: (open: boolean) => void;
   onToggleTerminal: () => void;
   onToggleRightPanel: () => void;
 }
 
 export const PanelLayoutControls = memo(function PanelLayoutControls({
+  showTalkingHeadControl = false,
   showTerminalControl = true,
+  talkingHeadOpen = false,
   terminalAvailable,
   terminalOpen,
   terminalShortcutLabel,
@@ -29,6 +40,7 @@ export const PanelLayoutControls = memo(function PanelLayoutControls({
   rightPanelShortcutLabel,
   rightPanelUnavailableLabel = "Right panel is unavailable",
   liveAgentCount,
+  onTalkingHeadOpenChange,
   onToggleTerminal,
   onToggleRightPanel,
 }: PanelLayoutControlsProps) {
@@ -37,6 +49,25 @@ export const PanelLayoutControls = memo(function PanelLayoutControls({
       className="flex h-full shrink-0 items-center gap-1 [-webkit-app-region:no-drag]"
       data-panel-layout-controls
     >
+      {showTalkingHeadControl ? (
+        <Tooltip>
+          <TooltipTrigger render={<span className="flex shrink-0" />}>
+            <Toggle
+              aria-label={talkingHeadOpen ? "Hide talking head" : "Show talking head"}
+              className="shrink-0 [-webkit-app-region:no-drag]"
+              onPressedChange={onTalkingHeadOpenChange}
+              pressed={talkingHeadOpen}
+              size="sm"
+              variant="ghost"
+            >
+              <ScanFaceIcon className="size-4" />
+            </Toggle>
+          </TooltipTrigger>
+          <TooltipPopup side="bottom">
+            {talkingHeadOpen ? "Hide talking head" : "Show talking head"}
+          </TooltipPopup>
+        </Tooltip>
+      ) : null}
       {showTerminalControl ? (
         <Tooltip>
           <TooltipTrigger render={<span className="flex shrink-0" />}>

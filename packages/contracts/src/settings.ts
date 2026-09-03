@@ -197,6 +197,18 @@ export const BrowserLinkTarget = Schema.Literals(["system", "app"]);
 export type BrowserLinkTarget = typeof BrowserLinkTarget.Type;
 export const DEFAULT_BROWSER_LINK_TARGET: BrowserLinkTarget = "system";
 
+export const TalkingHeadAvatar = Schema.Literals([
+  "robot",
+  "wizard",
+  "knight",
+  "rogue",
+  "slime",
+  "archer",
+  "healer",
+]);
+export type TalkingHeadAvatar = typeof TalkingHeadAvatar.Type;
+export const DEFAULT_TALKING_HEAD_AVATAR: TalkingHeadAvatar = "robot";
+
 export const ClientSettingsSchema = Schema.Struct({
   appearanceContrast: AppearanceContrast.pipe(
     Schema.withDecodingDefault(Effect.succeed(DEFAULT_APPEARANCE_CONTRAST)),
@@ -342,6 +354,11 @@ export const ClientSettingsSchema = Schema.Struct({
   sidebarThreadPreviewCount: SidebarThreadPreviewCount.pipe(
     Schema.withDecodingDefault(Effect.succeed(DEFAULT_SIDEBAR_THREAD_PREVIEW_COUNT)),
   ),
+  talkingHeadEnabled: Schema.Boolean.pipe(Schema.withDecodingDefault(Effect.succeed(false))),
+  talkingHeadAvatar: TalkingHeadAvatar.pipe(
+    Schema.withDecodingDefault(Effect.succeed(DEFAULT_TALKING_HEAD_AVATAR)),
+  ),
+  talkingHeadSoundEnabled: Schema.Boolean.pipe(Schema.withDecodingDefault(Effect.succeed(true))),
   timestampFormat: TimestampFormat.pipe(
     Schema.withDecodingDefault(Effect.succeed(DEFAULT_TIMESTAMP_FORMAT)),
   ),
@@ -1175,6 +1192,9 @@ export const ClientSettingsPatch = Schema.Struct({
   sidebarProjectSortOrder: Schema.optionalKey(SidebarProjectSortOrder),
   sidebarThreadSortOrder: Schema.optionalKey(SidebarThreadSortOrder),
   sidebarThreadPreviewCount: Schema.optionalKey(SidebarThreadPreviewCount),
+  talkingHeadEnabled: Schema.optionalKey(Schema.Boolean),
+  talkingHeadAvatar: Schema.optionalKey(TalkingHeadAvatar),
+  talkingHeadSoundEnabled: Schema.optionalKey(Schema.Boolean),
   timestampFormat: Schema.optionalKey(TimestampFormat),
   wordWrap: Schema.optionalKey(Schema.Boolean),
 });

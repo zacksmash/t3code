@@ -86,6 +86,8 @@ describe("searchSettings", () => {
     expect(searchSettings("git security keys")[0]?.id).toBe("git-fetch-interval");
     expect(searchSettings("push notifications")[0]?.id).toBe("publish-agent-activity");
     expect(searchSettings("battery saver")[0]?.id).toBe("background-activity");
+    expect(searchSettings("female archer")[0]?.id).toBe("talking-head-avatar");
+    expect(searchSettings("priest")[0]?.id).toBe("talking-head-avatar");
     expect(searchSettings("binary path")[0]?.id).toBe("providers");
     expect(searchSettings("Antigravity")[0]?.id).toBe("providers");
     expect(searchSettings("Google sign in")[0]?.id).toBe("providers");
@@ -198,6 +200,16 @@ describe("searchSettings", () => {
       id: "environment-identification",
       to: "/settings/appearance",
       targetId: "appearance",
+    });
+    expect(searchSettings("talking head avatar")[0]).toMatchObject({
+      id: "talking-head-avatar",
+      to: "/settings/appearance",
+      targetId: "talking-head",
+    });
+    expect(searchSettings("talking head sounds")[0]).toMatchObject({
+      id: "talking-head-sound",
+      to: "/settings/appearance",
+      targetId: "talking-head",
     });
   });
 
