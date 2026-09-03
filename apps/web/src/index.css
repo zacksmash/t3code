@@ -2047,79 +2047,134 @@ code {
   animation: talking-head-open 560ms steps(1, end) infinite;
 }
 
-.talking-head-spell {
+.talking-head-shell {
   --talking-head-spell-color: #75d7ff;
-  --talking-head-spell-duration: 850ms;
+  --talking-head-spell-duration: 1200ms;
+}
+
+.talking-head-shell[data-spell-avatar="robot"] {
+  --talking-head-spell-color: #45d7ff;
+}
+
+.talking-head-shell[data-spell-avatar="wizard"] {
+  --talking-head-spell-color: #a77cff;
+}
+
+.talking-head-shell[data-spell-avatar="knight"] {
+  --talking-head-spell-color: #ffc85c;
+}
+
+.talking-head-shell[data-spell-avatar="rogue"] {
+  --talking-head-spell-color: #e07aff;
+}
+
+.talking-head-shell[data-spell-avatar="slime"] {
+  --talking-head-spell-color: #77f29a;
+}
+
+.talking-head-shell[data-spell-avatar="archer"] {
+  --talking-head-spell-color: #ffe56b;
+}
+
+.talking-head-shell[data-spell-avatar="healer"] {
+  --talking-head-spell-color: #9ef9ff;
+}
+
+.talking-head-shell[data-spell-kind="cast"] {
+  --talking-head-spell-duration: 950ms;
+}
+
+.talking-head-shell[data-spell-kind="fizzle"] {
+  --talking-head-spell-duration: 1200ms;
+  --talking-head-spell-color: #ff516d;
+}
+
+.talking-head-shell[data-spell-kind="victory"] {
+  --talking-head-spell-duration: 1800ms;
+}
+
+.talking-head-shell[data-spell-active="true"] {
+  border-color: color-mix(in srgb, var(--talking-head-spell-color) 78%, white);
+  animation: talking-head-spell-panel-impact var(--talking-head-spell-duration) steps(8, end) both;
+}
+
+.talking-head-shell[data-spell-kind="fizzle"] {
+  animation-name: talking-head-spell-panel-fizzle;
+}
+
+.talking-head-shell[data-spell-kind="victory"] {
+  animation-name: talking-head-spell-panel-victory;
+}
+
+.talking-head-spell {
   position: absolute;
-  z-index: 10;
+  z-index: 15;
   inset: 0;
   overflow: hidden;
   contain: paint;
   color: var(--talking-head-spell-color);
-  animation: talking-head-spell-overlay var(--talking-head-spell-duration) steps(6, end) both;
+  text-shadow: 0 0 8px currentColor;
+  animation: talking-head-spell-overlay var(--talking-head-spell-duration) steps(8, end) both;
 }
 
-.talking-head-spell[data-spell-avatar="robot"] {
-  --talking-head-spell-color: #45d7ff;
+.talking-head-spell-flash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 50% 48%,
+    color-mix(in srgb, currentColor 72%, white) 0%,
+    color-mix(in srgb, currentColor 38%, transparent) 35%,
+    transparent 72%
+  );
+  mix-blend-mode: screen;
+  animation: talking-head-spell-flash var(--talking-head-spell-duration) steps(7, end) both;
 }
 
-.talking-head-spell[data-spell-avatar="wizard"] {
-  --talking-head-spell-color: #a77cff;
+.talking-head-spell-rays {
+  position: absolute;
+  inset: -42%;
+  background: repeating-conic-gradient(
+    from 0deg,
+    transparent 0deg 13deg,
+    color-mix(in srgb, currentColor 62%, transparent) 14deg 19deg,
+    transparent 20deg 42deg
+  );
+  mask-image: radial-gradient(circle, transparent 0 20%, black 34% 68%, transparent 78%);
+  animation: talking-head-spell-rays var(--talking-head-spell-duration) steps(10, end) both;
 }
 
-.talking-head-spell[data-spell-avatar="knight"] {
-  --talking-head-spell-color: #ffc85c;
-}
-
-.talking-head-spell[data-spell-avatar="rogue"] {
-  --talking-head-spell-color: #e07aff;
-}
-
-.talking-head-spell[data-spell-avatar="slime"] {
-  --talking-head-spell-color: #77f29a;
-}
-
-.talking-head-spell[data-spell-avatar="archer"] {
-  --talking-head-spell-color: #ffe56b;
-}
-
-.talking-head-spell[data-spell-avatar="healer"] {
-  --talking-head-spell-color: #9ef9ff;
-}
-
-.talking-head-spell[data-spell-kind="cast"] {
-  --talking-head-spell-duration: 700ms;
-}
-
-.talking-head-spell[data-spell-kind="fizzle"] {
-  --talking-head-spell-duration: 900ms;
-  --talking-head-spell-color: #ff7085;
-}
-
-.talking-head-spell[data-spell-kind="victory"] {
-  --talking-head-spell-duration: 1200ms;
+.talking-head-spell-ring {
+  position: absolute;
+  inset: 8%;
+  border: 4px dotted currentColor;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 3px rgb(0 0 0 / 50%),
+    0 0 24px currentColor,
+    inset 0 0 20px color-mix(in srgb, currentColor 48%, transparent);
+  animation: talking-head-spell-ring var(--talking-head-spell-duration) steps(8, end) both;
 }
 
 .talking-head-spell-core {
   position: absolute;
-  inset: 18%;
-  border: 3px solid currentColor;
+  inset: 15%;
+  border: 5px solid currentColor;
   box-shadow:
-    0 0 0 2px rgb(0 0 0 / 55%),
-    0 0 18px color-mix(in srgb, currentColor 75%, transparent),
-    inset 0 0 12px color-mix(in srgb, currentColor 35%, transparent);
-  animation: talking-head-spell-core var(--talking-head-spell-duration) steps(6, end) both;
+    0 0 0 3px rgb(0 0 0 / 60%),
+    0 0 28px color-mix(in srgb, currentColor 92%, transparent),
+    inset 0 0 22px color-mix(in srgb, currentColor 52%, transparent);
+  animation: talking-head-spell-core var(--talking-head-spell-duration) steps(8, end) both;
 }
 
 .talking-head-spell-glyph {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 18%;
-  height: 18%;
-  border: 3px solid currentColor;
+  width: 25%;
+  height: 25%;
+  border: 5px solid currentColor;
   transform: translate(-50%, -50%) rotate(45deg);
-  filter: drop-shadow(0 0 5px currentColor);
+  filter: drop-shadow(0 0 9px currentColor);
 }
 
 .talking-head-spell[data-spell-avatar="robot"] .talking-head-spell-core {
@@ -2127,13 +2182,13 @@ code {
 }
 
 .talking-head-spell[data-spell-avatar="robot"] .talking-head-spell-glyph {
-  width: 28%;
-  height: 8%;
+  width: 38%;
+  height: 10%;
   border: 0;
   background: currentColor;
   box-shadow:
-    -12px 0 currentColor,
-    12px 0 currentColor;
+    -17px 0 currentColor,
+    17px 0 currentColor;
   transform: translate(-50%, -50%);
 }
 
@@ -2143,8 +2198,8 @@ code {
 }
 
 .talking-head-spell[data-spell-avatar="knight"] .talking-head-spell-glyph {
-  width: 25%;
-  height: 31%;
+  width: 32%;
+  height: 39%;
   border: 0;
   background: currentColor;
   clip-path: polygon(50% 0, 100% 18%, 86% 76%, 50% 100%, 14% 76%, 0 18%);
@@ -2152,8 +2207,8 @@ code {
 }
 
 .talking-head-spell[data-spell-avatar="rogue"] .talking-head-spell-glyph {
-  width: 10%;
-  height: 34%;
+  width: 13%;
+  height: 44%;
   border: 0;
   background: currentColor;
   clip-path: polygon(50% 0, 100% 75%, 50% 100%, 0 75%);
@@ -2171,8 +2226,8 @@ code {
 }
 
 .talking-head-spell[data-spell-avatar="archer"] .talking-head-spell-glyph {
-  width: 38%;
-  height: 5%;
+  width: 52%;
+  height: 7%;
   border: 0;
   background: currentColor;
   clip-path: polygon(0 35%, 72% 35%, 72% 0, 100% 50%, 72% 100%, 72% 65%, 0 65%);
@@ -2189,14 +2244,14 @@ code {
 
 .talking-head-spell[data-spell-kind="divination"] .talking-head-spell-core {
   border-style: double;
-  border-width: 5px;
+  border-width: 8px;
   border-radius: 50%;
   animation-name: talking-head-spell-divination;
 }
 
 .talking-head-spell[data-spell-kind="cast"] .talking-head-spell-core {
-  inset: 10% 42% 10% 42%;
-  border-width: 0 4px;
+  inset: 3% 39%;
+  border-width: 0 7px;
   transform: rotate(32deg);
   animation-name: talking-head-spell-cast;
 }
@@ -2207,44 +2262,66 @@ code {
 }
 
 .talking-head-spell[data-spell-kind="victory"] .talking-head-spell-core {
-  inset: 13%;
+  inset: 8%;
   border-style: double;
-  border-width: 6px;
+  border-width: 9px;
   animation-name: talking-head-spell-victory;
 }
 
 .talking-head-spell-particle {
   --talking-head-spell-x: 0;
-  --talking-head-spell-y: -48px;
+  --talking-head-spell-y: -92px;
   position: absolute;
   top: 55%;
   left: 50%;
-  width: 7px;
-  height: 7px;
+  width: 10px;
+  height: 10px;
   background: currentColor;
-  box-shadow: 0 0 7px currentColor;
+  box-shadow:
+    0 0 0 2px rgb(255 255 255 / 72%),
+    0 0 14px currentColor;
   transform: rotate(45deg);
   animation: talking-head-spell-particle var(--talking-head-spell-duration) steps(6, end) both;
 }
 
-.talking-head-spell-particle:nth-of-type(2) {
-  --talking-head-spell-x: -64px;
-  --talking-head-spell-y: -42px;
-}
-
-.talking-head-spell-particle:nth-of-type(3) {
-  --talking-head-spell-x: 62px;
-  --talking-head-spell-y: -54px;
-}
-
-.talking-head-spell-particle:nth-of-type(4) {
-  --talking-head-spell-x: -48px;
-  --talking-head-spell-y: 45px;
-}
-
 .talking-head-spell-particle:nth-of-type(5) {
-  --talking-head-spell-x: 54px;
-  --talking-head-spell-y: 38px;
+  --talking-head-spell-x: -102px;
+  --talking-head-spell-y: -72px;
+}
+
+.talking-head-spell-particle:nth-of-type(6) {
+  --talking-head-spell-x: 96px;
+  --talking-head-spell-y: -88px;
+}
+
+.talking-head-spell-particle:nth-of-type(7) {
+  --talking-head-spell-x: -88px;
+  --talking-head-spell-y: 76px;
+}
+
+.talking-head-spell-particle:nth-of-type(8) {
+  --talking-head-spell-x: 98px;
+  --talking-head-spell-y: 68px;
+}
+
+.talking-head-spell-particle:nth-of-type(9) {
+  --talking-head-spell-x: -28px;
+  --talking-head-spell-y: -116px;
+}
+
+.talking-head-spell-particle:nth-of-type(10) {
+  --talking-head-spell-x: 35px;
+  --talking-head-spell-y: 108px;
+}
+
+.talking-head-spell-particle:nth-of-type(11) {
+  --talking-head-spell-x: -116px;
+  --talking-head-spell-y: 10px;
+}
+
+.talking-head-spell-particle:nth-of-type(12) {
+  --talking-head-spell-x: 114px;
+  --talking-head-spell-y: -2px;
 }
 
 .talking-head-spell[data-spell-avatar="slime"] .talking-head-spell-particle,
@@ -2254,20 +2331,105 @@ code {
 
 .talking-head-spell-label {
   position: absolute;
-  top: 8px;
-  left: 8px;
-  padding: 2px 5px;
-  border: 1px solid currentColor;
-  background: rgb(7 10 18 / 82%);
-  box-shadow: 2px 2px 0 rgb(0 0 0 / 65%);
+  right: 50%;
+  bottom: 10px;
+  padding: 4px 8px;
+  border: 2px solid currentColor;
+  background: rgb(7 10 18 / 90%);
+  box-shadow:
+    3px 3px 0 rgb(0 0 0 / 72%),
+    0 0 15px color-mix(in srgb, currentColor 70%, transparent);
   color: currentColor;
   font-family: var(--font-mono);
-  font-size: 9px;
-  font-weight: 700;
-  line-height: 12px;
-  letter-spacing: 0.08em;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 14px;
+  letter-spacing: 0.11em;
   text-transform: uppercase;
-  animation: talking-head-spell-label var(--talking-head-spell-duration) steps(4, end) both;
+  transform: translateX(50%);
+  white-space: nowrap;
+  animation: talking-head-spell-label var(--talking-head-spell-duration) steps(6, end) both;
+}
+
+@keyframes talking-head-spell-panel-impact {
+  0%,
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+
+  12% {
+    transform: scale(1.035);
+    filter: brightness(1.7) saturate(1.35);
+    box-shadow:
+      0 0 0 4px color-mix(in srgb, var(--talking-head-spell-color) 80%, white),
+      0 0 34px var(--talking-head-spell-color);
+  }
+
+  28% {
+    transform: scale(0.99);
+    filter: brightness(1.05);
+  }
+
+  44% {
+    transform: scale(1.018);
+    filter: brightness(1.35);
+  }
+}
+
+@keyframes talking-head-spell-panel-fizzle {
+  0%,
+  100% {
+    transform: translate(0, 0);
+    filter: brightness(1);
+  }
+
+  12% {
+    transform: translate(-4px, 2px);
+    filter: brightness(1.6) saturate(1.5);
+    box-shadow: 0 0 30px var(--talking-head-spell-color);
+  }
+
+  20% {
+    transform: translate(4px, -2px);
+  }
+
+  30% {
+    transform: translate(-3px, -1px);
+  }
+
+  42% {
+    transform: translate(2px, 2px);
+    filter: brightness(0.8) saturate(0.65);
+  }
+}
+
+@keyframes talking-head-spell-panel-victory {
+  0%,
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+
+  10% {
+    transform: scale(1.045);
+    filter: brightness(1.9) saturate(1.45);
+    box-shadow:
+      0 0 0 5px color-mix(in srgb, var(--talking-head-spell-color) 84%, white),
+      0 0 42px var(--talking-head-spell-color);
+  }
+
+  24%,
+  48% {
+    transform: scale(1.015);
+    filter: brightness(1.35);
+  }
+
+  36%,
+  60% {
+    transform: scale(1);
+    filter: brightness(1.08);
+  }
 }
 
 @keyframes talking-head-spell-overlay {
@@ -2276,9 +2438,81 @@ code {
     opacity: 0;
   }
 
-  14%,
-  78% {
+  7%,
+  90% {
     opacity: 1;
+  }
+}
+
+@keyframes talking-head-spell-flash {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+
+  10% {
+    opacity: 0.95;
+    transform: scale(1.2);
+  }
+
+  22% {
+    opacity: 0.18;
+    transform: scale(1);
+  }
+
+  38% {
+    opacity: 0.62;
+    transform: scale(1.14);
+  }
+
+  62% {
+    opacity: 0.12;
+    transform: scale(1.25);
+  }
+}
+
+@keyframes talking-head-spell-rays {
+  0% {
+    opacity: 0;
+    transform: scale(0.35) rotate(-45deg);
+  }
+
+  18% {
+    opacity: 0.72;
+    transform: scale(0.9) rotate(0deg);
+  }
+
+  72% {
+    opacity: 0.38;
+    transform: scale(1.12) rotate(105deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.25) rotate(155deg);
+  }
+}
+
+@keyframes talking-head-spell-ring {
+  0% {
+    opacity: 0;
+    transform: scale(0.15) rotate(0deg);
+  }
+
+  22% {
+    opacity: 1;
+    transform: scale(0.72) rotate(45deg);
+  }
+
+  65% {
+    opacity: 0.78;
+    transform: scale(1.08) rotate(130deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.35) rotate(180deg);
   }
 }
 
@@ -2390,13 +2624,13 @@ code {
   0%,
   100% {
     opacity: 0;
-    transform: translateY(-4px);
+    transform: translate(50%, 7px) scale(0.8);
   }
 
-  18%,
-  72% {
+  14%,
+  82% {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate(50%, 0) scale(1);
   }
 }
 
@@ -2407,6 +2641,9 @@ code {
   }
 
   .talking-head-spell,
+  .talking-head-spell-flash,
+  .talking-head-spell-rays,
+  .talking-head-spell-ring,
   .talking-head-spell-core,
   .talking-head-spell-particle,
   .talking-head-spell-label {
@@ -2417,6 +2654,13 @@ code {
     opacity: 0.9;
   }
 
+  .talking-head-shell[data-spell-active="true"] {
+    animation: none;
+  }
+
+  .talking-head-spell-flash,
+  .talking-head-spell-rays,
+  .talking-head-spell-ring,
   .talking-head-spell-particle {
     opacity: 0;
   }

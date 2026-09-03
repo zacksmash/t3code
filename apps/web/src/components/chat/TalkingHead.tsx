@@ -90,7 +90,10 @@ export const TalkingHead = memo(function TalkingHead({
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute top-3 right-3 z-10 size-48 overflow-hidden rounded-sm border-2 border-border bg-card/95 shadow-lg sm:size-64"
+      className="talking-head-shell pointer-events-none absolute top-3 right-3 z-10 size-48 overflow-hidden rounded-sm border-2 border-border bg-card/95 shadow-lg sm:size-64"
+      data-spell-active={spellCue === null ? "false" : "true"}
+      data-spell-avatar={avatar}
+      data-spell-kind={spellCue?.kind}
       data-talking-head
     >
       <div className="relative size-full overflow-hidden bg-muted/50">

@@ -39,10 +39,10 @@ export interface TalkingHeadSpellObservationInput {
 }
 
 const SPELL_DURATION_MS: Record<TalkingHeadSpellCueKind, number> = {
-  divination: 850,
-  cast: 700,
-  fizzle: 900,
-  victory: 1_200,
+  divination: 1_200,
+  cast: 950,
+  fizzle: 1_200,
+  victory: 1_800,
 };
 
 const SPELL_PRIORITY: Record<TalkingHeadSpellCueKind, number> = {
