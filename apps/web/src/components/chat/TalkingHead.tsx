@@ -2,6 +2,8 @@ import type { TalkingHeadAvatar } from "@t3tools/contracts/settings";
 import { memo } from "react";
 
 import { cn } from "~/lib/utils";
+import type { TalkingHeadSpellCue } from "./TalkingHeadSpell.logic";
+import { TalkingHeadSpellEffect } from "./TalkingHeadSpellEffect";
 
 export const TALKING_HEAD_AVATARS = [
   { value: "robot", label: "Robot" },
@@ -77,9 +79,11 @@ export const TalkingHeadPortrait = memo(function TalkingHeadPortrait({
 export const TalkingHead = memo(function TalkingHead({
   avatar,
   speaking,
+  spellCue = null,
 }: {
   readonly avatar: TalkingHeadAvatar;
   readonly speaking: boolean;
+  readonly spellCue?: TalkingHeadSpellCue | null;
 }) {
   const edgeToEdgeClassName = TALKING_HEAD_EDGE_CLASSES[avatar];
 
@@ -95,7 +99,8 @@ export const TalkingHead = memo(function TalkingHead({
           speaking={speaking}
           className={cn("size-full", edgeToEdgeClassName)}
         />
-        <div className="absolute inset-0 border border-foreground/20 shadow-[inset_0_0_0_2px_var(--color-background)]" />
+        <TalkingHeadSpellEffect avatar={avatar} cue={spellCue} />
+        <div className="absolute inset-0 z-20 border border-foreground/20 shadow-[inset_0_0_0_2px_var(--color-background)]" />
       </div>
     </div>
   );

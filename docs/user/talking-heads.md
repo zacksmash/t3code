@@ -14,6 +14,12 @@ even if the last saved provider state still says a response was streaming. Switc
 also stops the previous conversation's portrait and sound immediately; the selected conversation
 starts idle until it receives new output.
 
+The portrait reacts to new agent work with brief, class-colored spell effects. Reading and searching
+trigger **Divination**, edits and commands trigger **Cast**, errors trigger **Fizzle**, and a
+completed turn triggers **Victory**. Effects belong only to the selected conversation and do not
+replay from saved history after reloading or switching conversations. Reduced-motion mode keeps the
+spell cue visible briefly without animating it.
+
 Talking heads also play quiet, class-specific retro dialogue blips while their mouth is moving. The
 Archer and Healer speak in a higher register, the Knight and Rogue are deeper, the Wizard has a low
 ominous tone, and the Robot and Slime use metallic and bubbly effects. Blips cluster within words,

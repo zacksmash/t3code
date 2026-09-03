@@ -308,6 +308,7 @@ import {
 } from "./chat/TalkingHead.logic";
 import { useTalkingHeadSpeaking } from "./chat/useTalkingHeadSpeaking";
 import { prepareTalkingHeadSound, useTalkingHeadSound } from "./chat/useTalkingHeadSound";
+import { useTalkingHeadSpellCue } from "./chat/useTalkingHeadSpellCue";
 import { expandedImageKey, type ExpandedImagePreview } from "./chat/ExpandedImagePreview";
 import { NoActiveThreadState } from "./NoActiveThreadState";
 import { WorkspacePageHeader } from "./WorkspacePageHeader";
@@ -2525,6 +2526,15 @@ function ChatViewContent(props: ChatViewProps) {
     routeThreadKey,
     talkingHeadMessages,
     talkingHeadThreadReady ? (activePendingUserInput?.requestId ?? null) : null,
+  );
+  const talkingHeadSpellCue = useTalkingHeadSpellCue(
+    settings.talkingHeadEnabled,
+    talkingHeadThreadReady,
+    routeThreadKey,
+    talkingHeadThreadReady ? threadActivities : EMPTY_ACTIVITIES,
+    talkingHeadThreadReady && activeLatestTurn
+      ? { turnId: activeLatestTurn.turnId, state: activeLatestTurn.state }
+      : null,
   );
   const activePendingDraftAnswers = useMemo(
     () =>
@@ -7690,6 +7700,7 @@ function ChatViewContent(props: ChatViewProps) {
                 avatar={settings.talkingHeadAvatar}
                 key={routeThreadKey}
                 speaking={talkingHeadSpeaking}
+                spellCue={talkingHeadSpellCue}
               />
             ) : null}
             {/* Provider status overlays the timeline without changing its content height. */}
